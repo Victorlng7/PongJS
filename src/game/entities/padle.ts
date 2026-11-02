@@ -1,0 +1,46 @@
+export class Paddle {
+    private width: number;
+    private height: number;
+
+    private posY: number;
+    private posX: number;
+
+    private ctx: CanvasRenderingContext2D;
+
+    constructor(posX: number, ctx: CanvasRenderingContext2D) {
+        this.width = 10;
+        this.height = 100;
+
+        this.posY = 175;
+        this.posX = posX;
+
+        this.ctx = ctx;
+    }
+
+    getWidth(): number {
+        return this.width;
+    }
+    getHeight(): number {
+        return this.height;
+    }
+    getPosY(): number {
+        return this.posY;
+    }
+    getPosX(): number {
+        return this.posX;
+    }
+
+    setPosY(v: number) {
+        this.clearCtx();
+        this.posY += v;
+        this.draw();
+    }
+
+    clearCtx() {
+        this.ctx.clearRect(this.posX, this.posY, this.width, this.height);
+    }
+
+    draw(): void {
+        this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
+    }
+}
