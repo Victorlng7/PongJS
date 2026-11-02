@@ -8,7 +8,9 @@ export class ball {
     private velX: number;
     private velY: number;
 
-    constructor() {
+    private ctx: CanvasRenderingContext2D;
+
+    constructor(ctx: CanvasRenderingContext2D) {
         this.posX = 400;
         this.posY = 200;
 
@@ -17,6 +19,8 @@ export class ball {
 
         this.velX = 1;
         this.velY = 1;
+
+        this.ctx = ctx;
     }
 
     getPosY(): number {
@@ -41,5 +45,13 @@ export class ball {
 
     getVelY(): number {
         return this.velY;
+    }
+
+    draw() {
+        this.ctx.beginPath();
+
+        this.ctx.arc(this.posX, this.posY, 15, 0, Math.PI * 2);
+
+        this.ctx.fill();
     }
 }

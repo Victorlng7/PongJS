@@ -1,3 +1,4 @@
+import { ball } from "./game/entities/ball.ts";
 import { Paddle } from "./game/entities/padle.ts";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#caneva-jeu");
@@ -17,8 +18,12 @@ ctx.fillStyle = "black";
 const p1 = new Paddle(50, ctx);
 const p2 = new Paddle(750, ctx);
 
+const b = new ball(ctx);
+
 p1.draw();
 p2.draw();
+
+b.draw();
 
 window.addEventListener("keydown", (event) => {
     if (event.key === "ArrowDown") {
