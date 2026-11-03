@@ -76,13 +76,13 @@ export class Game {
             const key: string | null = this.key.key.key;
 
             if (key === "z") {
-                this.paddle1.setPosY(-2);
+                this.paddle1.setPosY(-4);
             } else if (key === "s") {
-                this.paddle1.setPosY(2);
+                this.paddle1.setPosY(4);
             } else if (key === "ArrowUp") {
-                this.paddle2.setPosY(-2);
+                this.paddle2.setPosY(-4);
             } else if (key === "ArrowDown") {
-                this.paddle2.setPosY(2);
+                this.paddle2.setPosY(4);
             }
         }
         //Update position de la balle
@@ -98,6 +98,37 @@ export class Game {
         if (this.ball.getPosY() <= 25 || this.ball.getPosY() >= 425) {
             this.ball.setVelY(this.ball.getVelY() * -1);
             this.ball.addVelY();
+        }
+
+        //simulation du rebond coté gauche
+        if (this.ball.getPosX() <= 75) {
+            //creation des bordures du paddle
+            const borderHautePaddle = this.paddle1.getPosY();
+            const borderBassePaddle = this.paddle1.getPosY() + 100;
+
+            //Si en contact --> Rebond
+            if (
+                this.ball.getPosY() <= borderBassePaddle &&
+                this.ball.getPosY() >= borderHautePaddle
+            ) {
+                this.ball.setVelX(this.ball.getVelX() * -1);
+                this.ball.addVelX();
+            }
+        }
+        //simulation du rebond coté droit
+        if (this.ball.getPosX() >= 725) {
+            //creation des bordures du paddle
+            const borderHautePaddle = this.paddle2.getPosY();
+            const borderBassePaddle = this.paddle2.getPosY() + 100;
+
+            //Si en contact --> Rebond
+            if (
+                this.ball.getPosY() <= borderBassePaddle &&
+                this.ball.getPosY() >= borderHautePaddle
+            ) {
+                this.ball.setVelX(this.ball.getVelX() * -1);
+                this.ball.addVelX();
+            }
         }
     }
 }

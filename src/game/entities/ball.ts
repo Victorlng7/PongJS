@@ -19,8 +19,14 @@ export class Ball {
         this.dirX = 1;
         this.dirY = 0;
 
-        this.velX = 100;
-        this.velY = 50;
+        this.velX =
+            Math.random() < 0.5
+                ? Math.random() * 50 + 50
+                : Math.random() * 50 - 100;
+        this.velY =
+            Math.random() < 0.5
+                ? Math.random() * 50 + 50
+                : Math.random() * 50 - 100;
         this.facteurAcceleration = 1.1;
 
         this.radius = 10;

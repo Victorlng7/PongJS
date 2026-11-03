@@ -31,7 +31,7 @@ export class Paddle {
     }
 
     setPosY(v: number) {
-        if (this.posY + v >= 0 && this.posY + v <= 350) {
+        if (this.posY + v >= -1 && this.posY + v <= 350) {
             this.posY += v;
         }
     }
