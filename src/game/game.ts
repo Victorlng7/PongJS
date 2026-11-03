@@ -1,5 +1,6 @@
 import { Ball } from "./entities/ball.ts";
 import { Paddle } from "./entities/padle.ts";
+import { Key } from "./keys/keys.ts";
 
 export class Game {
     private ctx: CanvasRenderingContext2D;
@@ -8,6 +9,7 @@ export class Game {
     private paddle2: Paddle;
 
     private ball: Ball;
+    private key: Key;
 
     constructor(ctx: CanvasRenderingContext2D) {
         //Initialisation valeur de la classe
@@ -17,9 +19,11 @@ export class Game {
         this.paddle2 = new Paddle(750, this.ctx);
 
         this.ball = new Ball(ctx);
+        this.key = new Key();
     }
 
     initJeu() {
+        //Dessin des différentes instances
         this.paddle1.draw();
         this.paddle2.draw();
         this.ball.draw();
@@ -29,19 +33,10 @@ export class Game {
         this.initJeu();
 
         window.addEventListener("keydown", (event) => {
-            //paddle 1
-            if (event.key === "s") {
-                this.paddle1.setPosY(5);
-            } else if (event.key === "z") {
-                this.paddle1.setPosY(-5);
-            }
-
-            //paddle 2
-            if (event.key === "ArrowDown") {
-                this.paddle2.setPosY(5);
-            } else if (event.key === "ArrowUp") {
-                this.paddle2.setPosY(-5);
-            }
+            this.key.setKey(event);
+        });
+        window.addEventListener("keyup", (_event) => {
+            this.key.deletKey();
         });
     }
 }
