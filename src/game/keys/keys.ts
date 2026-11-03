@@ -11,4 +11,13 @@ export class Key {
     deletKey() {
         this.key = null;
     }
+
+    isPressed(k: string): boolean {
+        if (this.key) {
+            if (this.key.code === k) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -22,15 +22,27 @@ export class Game {
         this.key = new Key();
     }
 
-    initJeu() {
+    lancerJeu() {
+        window.addEventListener("keydown", (event) => {
+            if (event.code === "Space") {
+                this.boucleJeu();
+            }
+        });
+    }
+
+    boucleJeu() {
+        this.updateGame();
+    }
+
+    draw() {
         //Dessin des différentes instances
         this.paddle1.draw();
         this.paddle2.draw();
         this.ball.draw();
     }
 
-    lancerJeu() {
-        this.initJeu();
+    updateGame() {
+        this.draw();
 
         window.addEventListener("keydown", (event) => {
             this.key.setKey(event);
