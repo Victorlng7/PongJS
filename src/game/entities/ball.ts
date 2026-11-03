@@ -7,6 +7,7 @@ export class Ball {
 
     private velX: number;
     private velY: number;
+    private facteurAcceleration: number;
 
     private radius: number;
     private ctx: CanvasRenderingContext2D;
@@ -18,8 +19,9 @@ export class Ball {
         this.dirX = 1;
         this.dirY = 0;
 
-        this.velX = 1;
-        this.velY = 1;
+        this.velX = 100;
+        this.velY = 50;
+        this.facteurAcceleration = 1.005;
 
         this.radius = 10;
         this.ctx = ctx;
@@ -56,6 +58,20 @@ export class Ball {
         this.posY += y;
 
         this.draw();
+    }
+
+    setVelX(v: number) {
+        this.velX = v;
+    }
+    addVelX() {
+        this.velX *= this.facteurAcceleration;
+    }
+
+    setVelY(v: number) {
+        this.velY = v;
+    }
+    addVelY() {
+        this.velY *= this.facteurAcceleration;
     }
 
     clear() {

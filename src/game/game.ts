@@ -50,9 +50,11 @@ export class Game {
         const elapsed = timestamp - this.lastFrameTime;
 
         if (elapsed >= this.frameDuration) {
+            const deltaTime = elapsed / 1000;
+
             this.lastFrameTime = timestamp;
 
-            this.updateGame();
+            this.updateGame(deltaTime);
         }
         requestAnimationFrame(this.boucleJeu);
     };
@@ -64,7 +66,7 @@ export class Game {
         this.ball.draw();
     }
 
-    updateGame() {
+    updateGame(deltaTime: number) {
         //Lecture des touches
         if (this.key.key) {
             const key: string | null = this.key.key.key;
@@ -80,6 +82,19 @@ export class Game {
             }
         }
         //Update position de la balle
+
+        this.ball.setPos(
+            this.ball.getVelX() * deltaTime,
+            this.ball.getVelY() * deltaTime,
+        );
+        if (this.ball.getPosX() <= 25 || this.ball.getPosX() >= 775) {
+            this.ball.setVelX(this.ball.getVelX() * -1);
+            this.ball.addVelX();
+        }
+        if (this.ball.getPosY() <= 25 || this.ball.getPosY() >= 425) {
+            this.ball.setVelY(this.ball.getVelY() * -1);
+            this.ball.addVelY();
+        }
 
         //Dessin des différentes chose update
         this.draw();
