@@ -32,14 +32,8 @@ export class Paddle {
 
     setPosY(v: number) {
         if (this.posY + v >= 0 && this.posY + v <= 350) {
-            this.clearCtx();
             this.posY += v;
-            this.draw();
         }
-    }
-
-    clearCtx() {
-        this.ctx.clearRect(this.posX, this.posY, this.width, this.height);
     }
 
     draw(): void {

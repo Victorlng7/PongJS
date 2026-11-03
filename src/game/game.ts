@@ -1,11 +1,11 @@
-import { TWO_THIRDS_PI } from "chart.js/helpers";
 import { Ball } from "./entities/ball.ts";
 import { Paddle } from "./entities/padle.ts";
 import { Key } from "./keys/keys.ts";
+import { Render } from "./render.ts";
 
 export class Game {
     //Caneva de rendu du jeu
-    private ctx: CanvasRenderingContext2D;
+    private rendu: Render;
 
     //Entitées
     private paddle1: Paddle;
@@ -22,10 +22,10 @@ export class Game {
 
     constructor(ctx: CanvasRenderingContext2D) {
         //Initialisation valeur de la classe
-        this.ctx = ctx;
+        this.rendu = new Render(ctx);
 
-        this.paddle1 = new Paddle(50, this.ctx);
-        this.paddle2 = new Paddle(750, this.ctx);
+        this.paddle1 = new Paddle(50, ctx);
+        this.paddle2 = new Paddle(750, ctx);
 
         this.ball = new Ball(ctx);
         this.key = new Key();
@@ -42,6 +42,7 @@ export class Game {
         window.addEventListener("keydown", (event) => {
             if (event.code === "Space") {
                 requestAnimationFrame(this.boucleJeu);
+                this.draw();
             }
         });
     }
@@ -55,6 +56,9 @@ export class Game {
             this.lastFrameTime = timestamp;
 
             this.updateGame(deltaTime);
+
+            this.rendu.render();
+            this.draw();
         }
         requestAnimationFrame(this.boucleJeu);
     };
@@ -83,7 +87,7 @@ export class Game {
         }
         //Update position de la balle
 
-        this.ball.setPos(
+        this.ball.moove(
             this.ball.getVelX() * deltaTime,
             this.ball.getVelY() * deltaTime,
         );
@@ -95,8 +99,5 @@ export class Game {
             this.ball.setVelY(this.ball.getVelY() * -1);
             this.ball.addVelY();
         }
-
-        //Dessin des différentes chose update
-        this.draw();
     }
 }

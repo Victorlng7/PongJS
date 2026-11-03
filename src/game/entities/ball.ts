@@ -21,7 +21,7 @@ export class Ball {
 
         this.velX = 100;
         this.velY = 50;
-        this.facteurAcceleration = 1.005;
+        this.facteurAcceleration = 1.1;
 
         this.radius = 10;
         this.ctx = ctx;
@@ -51,13 +51,9 @@ export class Ball {
         return this.velY;
     }
 
-    setPos(x: number, y: number) {
-        this.clear();
-
+    moove(x: number, y: number) {
         this.posX += x;
         this.posY += y;
-
-        this.draw();
     }
 
     setVelX(v: number) {
@@ -72,15 +68,6 @@ export class Ball {
     }
     addVelY() {
         this.velY *= this.facteurAcceleration;
-    }
-
-    clear() {
-        this.ctx.clearRect(
-            this.posX - this.radius,
-            this.posY - this.radius,
-            this.radius * 2,
-            this.radius * 2,
-        );
     }
 
     draw() {
