@@ -12,16 +12,17 @@ if (!ctx) {
     throw new Error("Contexte 2D indisponible");
 }
 
+const jeu = new Game(ctx);
+assignerScore(0, 0);
+
 const buttonLancer = document.querySelector<HTMLButtonElement>("#lancer");
 const buttonReset = document.querySelector<HTMLButtonElement>("#reset");
 
 if (buttonLancer && buttonReset) {
-    const jeu = new Game(ctx);
-
     jeu.relancerJeu();
 
     buttonLancer.addEventListener("click", () => {
-        jeu.lancerJeu();
+        jeu.relancerJeu();
         jeu.setLoop(true);
     });
 

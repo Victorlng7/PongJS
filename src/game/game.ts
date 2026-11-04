@@ -78,6 +78,9 @@ export class Game {
 
         //rendu + dessin
         this.draw();
+
+        //lancement de la boucle
+        this.lancerJeu();
     }
 
     resetjeu() {
@@ -136,8 +139,6 @@ export class Game {
     }
 
     updateGame(deltaTime: number) {
-        console.log(this.ball.getPosX(), this.ball.getPosY());
-
         //Lecture des touches
         if (this.key.key) {
             const key: string | null = this.key.key.key;
