@@ -7,6 +7,10 @@ export class Game {
     //Caneva de rendu du jeu
     private rendu: Render;
 
+    //score
+    private score1: number | null = null;
+    private score2: number | null = null;
+
     //Entitées
     private paddle1: Paddle;
     private paddle2: Paddle;
@@ -31,6 +35,18 @@ export class Game {
         this.key = new Key();
     }
 
+    relancerJeu(ctx: CanvasRenderingContext2D) {
+        this.rendu = new Render(ctx);
+
+        this.paddle1 = new Paddle(0, ctx);
+        this.paddle2 = new Paddle(790, ctx);
+
+        this.ball = new Ball(ctx);
+        this.key = new Key();
+
+        this.rendu.render();
+    }
+
     lancerJeu() {
         window.addEventListener("keydown", (event) => {
             this.key.setKey(event);
@@ -38,13 +54,8 @@ export class Game {
         window.addEventListener("keyup", (_event) => {
             this.key.deletKey();
         });
-
-        window.addEventListener("keydown", (event) => {
-            if (event.code === "Space") {
-                requestAnimationFrame(this.boucleJeu);
-                this.draw();
-            }
-        });
+        requestAnimationFrame(this.boucleJeu);
+        this.draw();
     }
 
     private boucleJeu = (timestamp: number): void => {

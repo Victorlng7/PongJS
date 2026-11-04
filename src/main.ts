@@ -15,3 +15,9 @@ if (!ctx) {
 const jeu = new Game(ctx);
 
 jeu.lancerJeu();
+
+window.addEventListener("keydown", (event) => {
+    if (event.code === "Space") {
+        jeu.relancerJeu(ctx);
+    }
+});
