@@ -24,8 +24,8 @@ export class Game {
         //Initialisation valeur de la classe
         this.rendu = new Render(ctx);
 
-        this.paddle1 = new Paddle(50, ctx);
-        this.paddle2 = new Paddle(750, ctx);
+        this.paddle1 = new Paddle(0, ctx);
+        this.paddle2 = new Paddle(790, ctx);
 
         this.ball = new Ball(ctx);
         this.key = new Key();
@@ -101,7 +101,7 @@ export class Game {
         }
 
         //simulation du rebond coté gauche
-        if (this.ball.getPosX() <= 75) {
+        if (this.ball.getPosX() === 0) {
             //creation des bordures du paddle
             const borderHautePaddle = this.paddle1.getPosY();
             const borderBassePaddle = this.paddle1.getPosY() + 100;
@@ -116,7 +116,7 @@ export class Game {
             }
         }
         //simulation du rebond coté droit
-        if (this.ball.getPosX() >= 725) {
+        if (this.ball.getPosX() === 800) {
             //creation des bordures du paddle
             const borderHautePaddle = this.paddle2.getPosY();
             const borderBassePaddle = this.paddle2.getPosY() + 100;
