@@ -39,4 +39,8 @@ export class Paddle {
     draw(): void {
         this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
     }
+
+    default() {
+        this.posY = 175;
+    }
 }

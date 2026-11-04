@@ -12,23 +12,30 @@ if (!ctx) {
     throw new Error("Contexte 2D indisponible");
 }
 
-const jeu = new Game(ctx);
+const buttonLancer = document.querySelector<HTMLButtonElement>("#lancer");
+const buttonReset = document.querySelector<HTMLButtonElement>("#reset");
 
-jeu.lancerJeu();
-assignerScore();
+if (buttonLancer && buttonReset) {
+    const jeu = new Game(ctx);
 
-window.addEventListener("keydown", (event) => {
-    if (event.code === "Space") {
-        jeu.relancerJeu();
-    }
-});
+    jeu.relancerJeu();
 
-export function assignerScore() {
+    buttonLancer.addEventListener("click", () => {
+        jeu.lancerJeu();
+        jeu.setLoop(true);
+    });
+
+    buttonReset.addEventListener("click", () => {
+        jeu.resetjeu();
+    });
+}
+
+export function assignerScore(score1: number, score2: number) {
     const scoreForm1 = document.querySelector<HTMLSpanElement>("#score1");
     const scoreForm2 = document.querySelector<HTMLSpanElement>("#score2");
 
     if (scoreForm1 && scoreForm2) {
-        scoreForm1.textContent = jeu.getScore1().toString();
-        scoreForm2.textContent = jeu.getScore2().toString();
+        scoreForm1.textContent = score1.toString();
+        scoreForm2.textContent = score2.toString();
     }
 }

@@ -22,6 +22,7 @@ export class Game {
     private key: Key;
 
     //Attribut pour la loop
+    private loop = false;
     private readonly FPS = 60;
     private readonly frameDuration = 1000 / this.FPS;
     private lastFrameTime = 0;
@@ -48,7 +49,7 @@ export class Game {
         return this.score2;
     }
 
-    setScore(joueur: 1 | 2, clear: boolean) {
+    setScore(joueur: 1 | 2, clear?: boolean) {
         if (clear) {
             this.score1 = 0;
             this.score2 = 0;
@@ -60,14 +61,33 @@ export class Game {
             }
         }
 
-        console.log({ "this.score1": this.score1, "this.score2": this.score2 });
-        assignerScore();
+        assignerScore(this.score1, this.score2);
+    }
+
+    setLoop(b: boolean) {
+        this.loop = b;
     }
 
     relancerJeu() {
+        //creation d'une nouvelle balle
         this.ball = new Ball(this.ctx);
 
-        this.rendu.render();
+        //rendu + dessin
+        this.draw();
+    }
+
+    resetjeu() {
+        //reset position des paddle :
+        this.paddle1.default();
+        this.paddle2.default();
+
+        //reinitialisation du score
+        this.setScore(1, true);
+
+        //arret du jeu
+        this.loop = false;
+
+        this.relancerJeu();
     }
 
     lancerJeu() {
@@ -83,21 +103,25 @@ export class Game {
     private boucleJeu = (timestamp: number): void => {
         const elapsed = timestamp - this.lastFrameTime;
 
-        if (elapsed >= this.frameDuration) {
+        if (elapsed >= this.frameDuration && this.loop) {
             const deltaTime = elapsed / 1000;
 
             this.lastFrameTime = timestamp;
 
             this.updateGame(deltaTime);
 
-            this.rendu.render();
             this.draw();
         }
         requestAnimationFrame(this.boucleJeu);
     };
+
     draw() {
         //Dessin des différentes instances
-        //Pas besoin des les clear car le font elles même
+
+        //Suppression avant de dessiner
+        this.rendu.render();
+
+        //dessins des entitées
         this.paddle1.draw();
         this.paddle2.draw();
         this.ball.draw();
@@ -168,7 +192,7 @@ export class Game {
     }
 
     pointMarquer(joueur: 1 | 2) {
-        this.setScore(joueur, false);
+        this.setScore(joueur);
 
         this.relancerJeu();
     }
