@@ -22,7 +22,7 @@ export class Game {
     private key: Key;
 
     //Attribut pour la loop
-    private loop = false;
+    private loop: boolean = false;
     private readonly FPS = 60;
     private readonly frameDuration = 1000 / this.FPS;
     private lastFrameTime = 0;
@@ -40,6 +40,8 @@ export class Game {
 
         this.score1 = 0;
         this.score2 = 0;
+
+        this.setLoop(false);
     }
 
     getScore1(): number {
@@ -85,18 +87,22 @@ export class Game {
         this.setScore(1, true);
 
         //arret du jeu
-        this.loop = false;
+        this.setLoop(false);
 
         this.relancerJeu();
     }
 
     lancerJeu() {
+        //ajout en continu des touches pressé
         window.addEventListener("keydown", (event) => {
             this.key.setKey(event);
         });
+        //suppresion des touches quand elles sont relachées
         window.addEventListener("keyup", () => {
             this.key.deletKey();
         });
+
+        //lancement de la boucle du jeu
         requestAnimationFrame(this.boucleJeu);
     }
 
@@ -128,26 +134,28 @@ export class Game {
     }
 
     updateGame(deltaTime: number) {
+        console.log(this.ball.getPosX(), this.ball.getPosY());
+
         //Lecture des touches
         if (this.key.key) {
             const key: string | null = this.key.key.key;
 
             if (key === "z") {
-                this.paddle1.setPosY(-4);
+                this.paddle1.setPosY(-5);
             } else if (key === "s") {
-                this.paddle1.setPosY(4);
+                this.paddle1.setPosY(5);
             } else if (key === "ArrowUp") {
-                this.paddle2.setPosY(-4);
+                this.paddle2.setPosY(-5);
             } else if (key === "ArrowDown") {
-                this.paddle2.setPosY(4);
+                this.paddle2.setPosY(5);
             }
         }
         //Update position de la balle
-
         this.ball.moove(
             this.ball.getVelX() * deltaTime,
             this.ball.getVelY() * deltaTime,
         );
+
         if (this.ball.getPosY() <= 12.5 || this.ball.getPosY() >= 437.5) {
             this.ball.setVelY(this.ball.getVelY() * -1);
             this.ball.addVelY();
@@ -169,7 +177,7 @@ export class Game {
             }
         }
         //simulation du rebond coté droit
-        if (this.ball.getPosX() >= 767.5) {
+        if (this.ball.getPosX() >= 767.5 && this.ball.getPosX() <= 775) {
             //creation des bordures du paddle
             const borderHautePaddle = this.paddle2.getPosY();
             const borderBassePaddle = this.paddle2.getPosY() + 100;

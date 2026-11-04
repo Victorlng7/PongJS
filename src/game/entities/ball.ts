@@ -1,25 +1,21 @@
 export class Ball {
+    //position de la balle
     private posY: number;
     private posX: number;
 
-    private dirX: number;
-    private dirY: number;
-
+    //Velociter de la balle
     private velX: number;
     private velY: number;
     private facteurAcceleration: number;
-
     private velMax: number;
 
+    //Propriété pour draw la balle
     private radius: number;
     private ctx: CanvasRenderingContext2D;
 
     constructor(ctx: CanvasRenderingContext2D) {
         this.posX = 400;
         this.posY = 200;
-
-        this.dirX = 1;
-        this.dirY = 0;
 
         this.velX =
             Math.random() < 0.5
@@ -43,14 +39,6 @@ export class Ball {
 
     getPosX(): number {
         return this.posX;
-    }
-
-    getDirX(): number {
-        return this.dirX;
-    }
-
-    getDirY(): number {
-        return this.dirY;
     }
 
     getVelX(): number {
