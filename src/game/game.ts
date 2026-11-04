@@ -94,10 +94,12 @@ export class Game {
         if (this.ball.getPosX() <= 25 || this.ball.getPosX() >= 775) {
             this.ball.setVelX(this.ball.getVelX() * -1);
             this.ball.addVelX();
+            console.log(this.ball.getVelX(), this.ball.getVelY());
         }
         if (this.ball.getPosY() <= 25 || this.ball.getPosY() >= 425) {
             this.ball.setVelY(this.ball.getVelY() * -1);
             this.ball.addVelY();
+            console.log(this.ball.getVelX(), this.ball.getVelY());
         }
 
         //simulation du rebond coté gauche
