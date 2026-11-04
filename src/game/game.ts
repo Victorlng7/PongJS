@@ -1,3 +1,4 @@
+import { assignerScore } from "../main.ts";
 import { Ball } from "./entities/ball.ts";
 import { Paddle } from "./entities/padle.ts";
 import { Key } from "./keys/keys.ts";
@@ -6,10 +7,11 @@ import { Render } from "./render.ts";
 export class Game {
     //Caneva de rendu du jeu
     private rendu: Render;
+    private ctx: CanvasRenderingContext2D;
 
     //score
-    private score1: number | null = null;
-    private score2: number | null = null;
+    private score1: number = 0;
+    private score2: number = 0;
 
     //Entitées
     private paddle1: Paddle;
@@ -27,22 +29,43 @@ export class Game {
     constructor(ctx: CanvasRenderingContext2D) {
         //Initialisation valeur de la classe
         this.rendu = new Render(ctx);
+        this.ctx = ctx;
 
         this.paddle1 = new Paddle(0, ctx);
         this.paddle2 = new Paddle(790, ctx);
 
         this.ball = new Ball(ctx);
         this.key = new Key();
+
+        this.score1 = 0;
+        this.score2 = 0;
     }
 
-    relancerJeu(ctx: CanvasRenderingContext2D) {
-        this.rendu = new Render(ctx);
+    getScore1(): number {
+        return this.score1;
+    }
+    getScore2(): number {
+        return this.score2;
+    }
 
-        this.paddle1 = new Paddle(0, ctx);
-        this.paddle2 = new Paddle(790, ctx);
+    setScore(joueur: 1 | 2, clear: boolean) {
+        if (clear) {
+            this.score1 = 0;
+            this.score2 = 0;
+        } else {
+            if (joueur === 1) {
+                this.score1 += 1;
+            } else if (joueur === 2) {
+                this.score2 += 1;
+            }
+        }
 
-        this.ball = new Ball(ctx);
-        this.key = new Key();
+        console.log({ "this.score1": this.score1, "this.score2": this.score2 });
+        assignerScore();
+    }
+
+    relancerJeu() {
+        this.ball = new Ball(this.ctx);
 
         this.rendu.render();
     }
@@ -51,11 +74,10 @@ export class Game {
         window.addEventListener("keydown", (event) => {
             this.key.setKey(event);
         });
-        window.addEventListener("keyup", (_event) => {
+        window.addEventListener("keyup", () => {
             this.key.deletKey();
         });
         requestAnimationFrame(this.boucleJeu);
-        this.draw();
     }
 
     private boucleJeu = (timestamp: number): void => {
@@ -102,17 +124,13 @@ export class Game {
             this.ball.getVelX() * deltaTime,
             this.ball.getVelY() * deltaTime,
         );
-        if (this.ball.getPosX() <= 25 || this.ball.getPosX() >= 775) {
-            this.ball.setVelX(this.ball.getVelX() * -1);
-            this.ball.addVelX();
-        }
-        if (this.ball.getPosY() <= 25 || this.ball.getPosY() >= 425) {
+        if (this.ball.getPosY() <= 12.5 || this.ball.getPosY() >= 437.5) {
             this.ball.setVelY(this.ball.getVelY() * -1);
             this.ball.addVelY();
         }
 
         //simulation du rebond coté gauche
-        if (this.ball.getPosX() === 0) {
+        if (this.ball.getPosX() <= 22.5) {
             //creation des bordures du paddle
             const borderHautePaddle = this.paddle1.getPosY();
             const borderBassePaddle = this.paddle1.getPosY() + 100;
@@ -127,7 +145,7 @@ export class Game {
             }
         }
         //simulation du rebond coté droit
-        if (this.ball.getPosX() === 800) {
+        if (this.ball.getPosX() >= 767.5) {
             //creation des bordures du paddle
             const borderHautePaddle = this.paddle2.getPosY();
             const borderBassePaddle = this.paddle2.getPosY() + 100;
@@ -141,5 +159,17 @@ export class Game {
                 this.ball.addVelX();
             }
         }
+        // Point!
+        if (this.ball.getPosX() <= 0) {
+            this.pointMarquer(2);
+        } else if (this.ball.getPosX() >= 800) {
+            this.pointMarquer(1);
+        }
+    }
+
+    pointMarquer(joueur: 1 | 2) {
+        this.setScore(joueur, false);
+
+        this.relancerJeu();
     }
 }
