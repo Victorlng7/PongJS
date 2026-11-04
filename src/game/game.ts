@@ -68,6 +68,8 @@ export class Game {
 
     setLoop(b: boolean) {
         this.loop = b;
+
+        this.lastFrameTime = performance.now();
     }
 
     relancerJeu() {
